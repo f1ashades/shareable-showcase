@@ -13,6 +13,10 @@ export type Case = {
   actions: { name: string; reason: string }[];
   objections: { q: string; answer: string }[];
   pitfalls: string[];
+  trainingPlan?: { name: string; sets: number; isMain: boolean }[];
+  observationPoints?: { name: string; cue: string }[];
+  lastIssues?: { issue: string; followUp: string }[];
+  keyReminder?: string;
 };
 
 export const cases: Case[] = [
@@ -164,6 +168,31 @@ export const cases: Case[] = [
       "悬垂提膝 6 个观察点:抓握、头位、双腿、肩膀、腰部、提膝小腿",
       "「顶腰」信号优先快速响应,必要时退阶",
     ],
+    trainingPlan: [
+      { name: "悬垂提膝", sets: 3, isMain: true },
+      { name: "卷腹", sets: 2, isMain: false },
+      { name: "平板", sets: 2, isMain: false },
+    ],
+    observationPoints: [
+      { name: "抓握情况", cue: "看是否吃力、有没有缩下来" },
+      { name: "头位置", cue: "中立位,不仰头不下扬" },
+      { name: "双腿位置", cue: "并拢,不分开" },
+      { name: "肩膀状态", cue: "全程保持沉肩" },
+      { name: "腰部状态", cue: "全程不塌腰" },
+      { name: "提膝时小腿位置", cue: "垂直地面,不屈膝" },
+    ],
+    lastIssues: [
+      {
+        issue: "悬垂提膝时小腿有屈膝倾向(小腿回收)",
+        followUp: "今天看口令『别缩,是抬膝』是否仍然需要,以及调整效果",
+      },
+      {
+        issue: "腰部偶尔有顶腰",
+        followUp: "今天看是否仍然出现,是否需要退阶到踩凳",
+      },
+    ],
+    keyReminder:
+      "学员处于改变之星早期,核心耐力会更累。如有顶腰,优先退阶不要硬撑。",
   },
 ];
 
