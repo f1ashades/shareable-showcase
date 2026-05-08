@@ -13,6 +13,10 @@ export type Case = {
   actions: { name: string; reason: string }[];
   objections: { q: string; answer: string }[];
   pitfalls: string[];
+  trainingPlan?: { name: string; sets: number; isMain: boolean }[];
+  observationPoints?: { name: string; cue: string }[];
+  lastIssues?: { issue: string; followUp: string }[];
+  keyReminder?: string;
 };
 
 export const cases: Case[] = [
