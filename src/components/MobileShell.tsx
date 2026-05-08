@@ -106,6 +106,8 @@ export function MobileShell({
   back?: string;
 }) {
   const loc = useLocation();
+  const [showHelp, setShowHelp] = useState(false);
+  const explain = pageExplainMap[loc.pathname];
   return (
     <div className="mobile-shell">
       {/* Top bar */}
@@ -115,7 +117,18 @@ export function MobileShell({
             <span className="inline-block w-6 h-6 rounded-full bg-brand-500" />
             <span className="text-[12px] text-[var(--color-gray-500)]">教练硬线</span>
           </div>
-          <div className="ml-auto text-[11px] text-[var(--color-gray-400)]">教练 · 王思敏</div>
+          <div className="ml-auto flex flex-col items-end gap-1">
+            <div className="text-[11px] text-[var(--color-gray-400)]">教练 · 王思敏</div>
+            {explain && (
+              <button
+                onClick={() => setShowHelp(true)}
+                className="inline-flex items-center gap-0.5 text-[10px] text-brand-700 bg-brand-50 px-1.5 py-0.5 rounded-md active:bg-brand-100 transition"
+              >
+                <HelpCircle className="w-3 h-3" />
+                本页说明
+              </button>
+            )}
+          </div>
         </div>
         <div className="px-4 pb-3">
           <h1 className="text-[18px] leading-tight font-semibold text-[var(--color-green-700)]">{title}</h1>
