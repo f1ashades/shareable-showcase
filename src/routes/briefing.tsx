@@ -60,33 +60,35 @@ function BriefingPage() {
         </div>
       </div>
 
-      {/* Tier indicator */}
-      <Card className="!py-3.5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1.5">
-              {[1, 2, 3].map((i) => (
-                <span
-                  key={i}
-                  className={`w-2.5 h-2.5 rounded-full transition-all ${i <= tier ? "tier-dot-active" : "tier-dot-inactive"}`}
-                />
-              ))}
+      {/* Tier indicator (trial only) */}
+      {baseCase.type === "trial" && (
+        <Card className="!py-3.5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1.5">
+                {[1, 2, 3].map((i) => (
+                  <span
+                    key={i}
+                    className={`w-2.5 h-2.5 rounded-full transition-all ${i <= tier ? "tier-dot-active" : "tier-dot-inactive"}`}
+                  />
+                ))}
+              </div>
+              <span className="text-[12px] font-semibold text-[var(--color-gray-700)]">
+                档位 {tier}
+              </span>
             </div>
-            <span className="text-[12px] font-semibold text-[var(--color-gray-700)]">
-              档位 {tier}
-            </span>
+            <Tag color={tier === 3 ? "orange" : tier === 2 ? "brand" : "neutral"}>
+              {tier === 1 ? "基础 SOP 模板" : tier === 2 ? "半个性化" : "深度个性化"}
+            </Tag>
           </div>
-          <Tag color={tier === 3 ? "orange" : tier === 2 ? "brand" : "neutral"}>
-            {tier === 1 ? "基础 SOP 模板" : tier === 2 ? "半个性化" : "深度个性化"}
-          </Tag>
-        </div>
-        <div className="text-[11px] text-[var(--color-gray-400)] mt-2">
-          ※ 档位是 Demo 语言。实际给一线教练的产品里,他们感受不到档位 — 只是「贴信息 → 备课包变得更精准」。
-        </div>
-      </Card>
+          <div className="text-[11px] text-[var(--color-gray-400)] mt-2">
+            ※ 档位是 Demo 语言。实际给一线教练的产品里,他们感受不到档位 — 只是「贴信息 → 备课包变得更精准」。
+          </div>
+        </Card>
+      )}
 
-      {/* Upgrade hint */}
-      {tier < 3 && (
+      {/* Upgrade hint (trial only) */}
+      {baseCase.type === "trial" && tier < 3 && (
         <Card className="!p-3.5 bg-brand-50 border-brand-100">
           <div className="flex gap-2.5">
             <Sparkles className="w-4 h-4 text-brand-700 mt-0.5 flex-shrink-0" />
@@ -113,83 +115,160 @@ function BriefingPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-orange-500" />
-            <span className="text-[14px] font-semibold">备课包 · {baseCase.name}</span>
+            <span className="text-[14px] font-semibold">
+              {baseCase.type === "formal"
+                ? `📋 今日备课包 · ${baseCase.name}(正式课第 8 节)`
+                : `备课包 · ${baseCase.name}`}
+            </span>
           </div>
           <span className="text-[10px] text-[var(--color-gray-400)]">用时 6s</span>
         </div>
 
-        {/* 核心动机 */}
-        <Section
-          icon="📌"
-          title="核心动机假设"
-          extra={<Tag color={tier === 3 ? "orange" : "brand"}>置信度 {tier === 3 ? "高" : tier === 2 ? "中" : "低"}</Tag>}
-        >
-          <p className="text-[13px] text-[var(--color-gray-900)] leading-[1.75]">
-            {tier === 1 ? baseCase.motivationGuess + "。" : baseCase.motivationGuess + ","}
-            {tier >= 2 && <span className="text-orange-700 font-medium"> {baseCase.motivationDetail}</span>}
-          </p>
-          {tier >= 2 && (
-            <div className="mt-2.5 text-[11px] text-[var(--color-gray-500)] flex items-center gap-1">
-              <BookOpen className="w-3 h-3" />
-              来源:{baseCase.type === "formal" ? "第 4 本《动作选编》第 6 章" : "第 3 本《产后女性沟通》第 7 章"}
+        {baseCase.type === "trial" ? (
+          <>
+            {/* 核心动机 */}
+            <Section
+              icon="📌"
+              title="核心动机假设"
+              extra={<Tag color={tier === 3 ? "orange" : "brand"}>置信度 {tier === 3 ? "高" : tier === 2 ? "中" : "低"}</Tag>}
+            >
+              <p className="text-[13px] text-[var(--color-gray-900)] leading-[1.75]">
+                {tier === 1 ? baseCase.motivationGuess + "。" : baseCase.motivationGuess + ","}
+                {tier >= 2 && <span className="text-orange-700 font-medium"> {baseCase.motivationDetail}</span>}
+              </p>
+              {tier >= 2 && (
+                <div className="mt-2.5 text-[11px] text-[var(--color-gray-500)] flex items-center gap-1">
+                  <BookOpen className="w-3 h-3" />
+                  来源:第 3 本《产后女性沟通》第 7 章
+                </div>
+              )}
+            </Section>
+
+            {/* 必问问题 */}
+            <Section icon="💬" title={`必问的 ${baseCase.questions.length} 个问题`}>
+              <ul className="space-y-3">
+                {baseCase.questions.slice(0, tier === 1 ? 2 : baseCase.questions.length).map((q, i) => (
+                  <li key={i} className="flex gap-2">
+                    <span className="text-[12px] text-brand-700 font-bold mt-0.5">{i + 1}</span>
+                    <div className="flex-1">
+                      <div className="text-[13px] text-[var(--color-gray-900)] leading-[1.6] book-quote">「{q.q}」</div>
+                      <div className="text-[11px] text-[var(--color-gray-500)] mt-1">目的:{q.goal}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </Section>
+
+            {/* 课中动作 */}
+            <Section icon="💪" title="课中重点动作">
+              <ul className="space-y-2">
+                {baseCase.actions.map((a, i) => (
+                  <li key={i} className="flex items-center gap-2.5 p-2.5 rounded-[8px] bg-white/60">
+                    <span className="w-5 h-5 rounded-md bg-green-50 text-green-700 text-[11px] font-bold flex items-center justify-center">{i + 1}</span>
+                    <div className="flex-1">
+                      <div className="text-[13px] font-medium">{a.name}</div>
+                      <div className="text-[11px] text-[var(--color-gray-500)]">{a.reason}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </Section>
+
+            {/* 反对意见 */}
+            {baseCase.objections.length > 0 && (
+              <Section icon="🛡" title="反对意见 · 应答框架">
+                <ul className="space-y-2.5">
+                  {baseCase.objections.map((o, i) => (
+                    <li key={i} className="text-[12.5px]">
+                      <div className="text-[var(--color-gray-700)]">❓ "{o.q}"</div>
+                      <div className="text-orange-700 mt-1">→ {o.answer}</div>
+                    </li>
+                  ))}
+                </ul>
+              </Section>
+            )}
+
+            {/* 翻车点 */}
+            <div className="flex gap-2 p-3 rounded-[10px] bg-[var(--color-warning-bg)]">
+              <AlertTriangle className="w-4 h-4 text-[var(--color-warning)] mt-0.5 flex-shrink-0" />
+              <div className="text-[12px] text-[var(--color-gray-700)] leading-[1.65]">
+                <div className="font-semibold mb-1">小白教练翻车点</div>
+                {baseCase.pitfalls.map((p, i) => (
+                  <div key={i}>· {p}</div>
+                ))}
+              </div>
             </div>
-          )}
-        </Section>
+          </>
+        ) : (
+          <>
+            {/* 今日训练计划 */}
+            <Section icon="🎯" title="今日训练计划">
+              <ul className="space-y-2">
+                {baseCase.trainingPlan?.map((p, i) => (
+                  <li key={i} className="flex items-center gap-2.5 p-2.5 rounded-[8px] bg-white/60">
+                    <span className="w-5 h-5 rounded-md bg-green-50 text-green-700 text-[11px] font-bold flex items-center justify-center">
+                      {i + 1}
+                    </span>
+                    <div className="flex-1">
+                      <div className="text-[13px] font-medium">
+                        {p.name} × {p.sets} 组
+                      </div>
+                    </div>
+                    {p.isMain && <Tag color="orange">主项</Tag>}
+                  </li>
+                ))}
+              </ul>
+            </Section>
 
-        {/* 必问问题 */}
-        <Section icon="💬" title={`必问的 ${baseCase.questions.length} 个问题`}>
-          <ul className="space-y-3">
-            {baseCase.questions.slice(0, tier === 1 ? 2 : baseCase.questions.length).map((q, i) => (
-              <li key={i} className="flex gap-2">
-                <span className="text-[12px] text-brand-700 font-bold mt-0.5">{i + 1}</span>
-                <div className="flex-1">
-                  <div className="text-[13px] text-[var(--color-gray-900)] leading-[1.6] book-quote">「{q.q}」</div>
-                  <div className="text-[11px] text-[var(--color-gray-500)] mt-1">目的:{q.goal}</div>
+            {/* 6 个观察点 */}
+            <Section
+              icon="👁"
+              title={`${baseCase.trainingPlan?.find((p) => p.isMain)?.name} · 6 个观察点(必看)`}
+              extra={<Tag color="brand">来自《核心关键动作宝典》</Tag>}
+            >
+              <ul className="space-y-2.5">
+                {baseCase.observationPoints?.map((o, i) => (
+                  <li key={i} className="flex gap-2">
+                    <span className="text-[12px] text-brand-700 font-bold mt-0.5 flex-shrink-0 w-4">
+                      {i + 1}
+                    </span>
+                    <div className="flex-1">
+                      <div className="text-[13px] font-medium text-[var(--color-gray-900)]">{o.name}</div>
+                      <div className="text-[11px] text-[var(--color-gray-500)] mt-0.5 leading-[1.6]">
+                        → {o.cue}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </Section>
+
+            {/* 上节课问题 */}
+            {baseCase.lastIssues && baseCase.lastIssues.length > 0 && (
+              <Section icon="🔔" title="上节课提到的具体问题(关注)">
+                <ul className="space-y-3">
+                  {baseCase.lastIssues.map((item, i) => (
+                    <li key={i} className="text-[12.5px]">
+                      <div className="text-[var(--color-gray-700)]">• {item.issue}</div>
+                      <div className="text-orange-700 mt-1 pl-2">→ {item.followUp}</div>
+                    </li>
+                  ))}
+                </ul>
+              </Section>
+            )}
+
+            {/* 关键提醒 */}
+            {baseCase.keyReminder && (
+              <div className="flex gap-2 p-3 rounded-[10px] bg-[var(--color-warning-bg)]">
+                <AlertTriangle className="w-4 h-4 text-[var(--color-warning)] mt-0.5 flex-shrink-0" />
+                <div className="text-[12px] text-[var(--color-gray-700)] leading-[1.65]">
+                  <div className="font-semibold mb-1">💡 关键提醒</div>
+                  <div>{baseCase.keyReminder}</div>
                 </div>
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        {/* 课中动作 */}
-        <Section icon="💪" title="课中重点动作">
-          <ul className="space-y-2">
-            {baseCase.actions.map((a, i) => (
-              <li key={i} className="flex items-center gap-2.5 p-2.5 rounded-[8px] bg-white/60">
-                <span className="w-5 h-5 rounded-md bg-green-50 text-green-700 text-[11px] font-bold flex items-center justify-center">{i + 1}</span>
-                <div className="flex-1">
-                  <div className="text-[13px] font-medium">{a.name}</div>
-                  <div className="text-[11px] text-[var(--color-gray-500)]">{a.reason}</div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        {/* 反对意见 */}
-        {baseCase.objections.length > 0 && (
-          <Section icon="🛡" title="反对意见 · 应答框架">
-            <ul className="space-y-2.5">
-              {baseCase.objections.map((o, i) => (
-                <li key={i} className="text-[12.5px]">
-                  <div className="text-[var(--color-gray-700)]">❓ "{o.q}"</div>
-                  <div className="text-orange-700 mt-1">→ {o.answer}</div>
-                </li>
-              ))}
-            </ul>
-          </Section>
+              </div>
+            )}
+          </>
         )}
-
-        {/* 翻车点 */}
-        <div className="flex gap-2 p-3 rounded-[10px] bg-[var(--color-warning-bg)]">
-          <AlertTriangle className="w-4 h-4 text-[var(--color-warning)] mt-0.5 flex-shrink-0" />
-          <div className="text-[12px] text-[var(--color-gray-700)] leading-[1.65]">
-            <div className="font-semibold mb-1">小白教练翻车点</div>
-            {baseCase.pitfalls.map((p, i) => (
-              <div key={i}>· {p}</div>
-            ))}
-          </div>
-        </div>
       </div>
 
       <Link to="/review" className="block">
