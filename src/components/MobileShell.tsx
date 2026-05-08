@@ -29,8 +29,8 @@ export function MobileShell({
       <header className="sticky top-0 z-20 bg-[var(--background)]/85 backdrop-blur border-b border-[var(--color-gray-200)]">
         <div className="px-4 pt-3 pb-2.5 flex items-center gap-2">
           <div className="flex items-center gap-1.5">
-            <span className="inline-block w-6 h-6 rounded-md bg-brand-500 text-[var(--color-gray-900)] text-[11px] font-bold flex items-center justify-center">美</span>
-            <span className="text-[12px] text-[var(--color-gray-500)]">美团 × DP 教练助理</span>
+            <span className="inline-block w-6 h-6 rounded-full bg-brand-500" />
+            <span className="text-[12px] text-[var(--color-gray-500)]">教练硬线</span>
           </div>
           <div className="ml-auto text-[11px] text-[var(--color-gray-400)]">教练 · 王思敏</div>
         </div>
