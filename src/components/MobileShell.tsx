@@ -164,6 +164,57 @@ export function MobileShell({
           })}
         </div>
       </nav>
+
+      {/* 本页说明 弹窗 */}
+      {showHelp && explain && (
+        <div className="fixed inset-0 z-50 bg-black/40 flex items-end" onClick={() => setShowHelp(false)}>
+          <div
+            className="w-full max-w-[480px] mx-auto bg-white rounded-t-[20px] p-5 max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-1.5">
+                <HelpCircle className="w-4 h-4 text-brand-700" />
+                <h3 className="text-[15px] font-semibold">{explain.title}</h3>
+              </div>
+              <button onClick={() => setShowHelp(false)}>
+                <X className="w-5 h-5 text-[var(--color-gray-400)]" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <div className="text-[12px] font-semibold text-[var(--color-green-700)] mb-1.5">📌 本页展示哪些功能</div>
+                <ul className="space-y-1.5">
+                  {explain.features.map((f, i) => (
+                    <li key={i} className="text-[12.5px] text-[var(--color-gray-700)] leading-[1.65] pl-3 relative">
+                      <span className="absolute left-0 top-[7px] w-1 h-1 rounded-full bg-brand-500" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <div className="text-[12px] font-semibold text-[var(--color-green-700)] mb-1.5">🧩 设计逻辑</div>
+                <p className="text-[12.5px] text-[var(--color-gray-700)] leading-[1.7]">{explain.logic}</p>
+              </div>
+
+              <div className="p-3 rounded-[10px] bg-brand-50">
+                <div className="text-[12px] font-semibold text-brand-700 mb-1">🎯 解决什么问题(PRD)</div>
+                <p className="text-[12.5px] text-[var(--color-gray-700)] leading-[1.7]">{explain.problem}</p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowHelp(false)}
+              className="mt-5 w-full rounded-[10px] py-2.5 text-[13px] font-semibold bg-[var(--color-gray-100)] text-[var(--color-gray-700)]"
+            >
+              我知道了
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
