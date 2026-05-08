@@ -12,13 +12,20 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const steps = [
+const steps: {
+  to: "/profile" | "/briefing" | "/review" | "/dashboard" | "/badge";
+  icon: typeof User;
+  label: string;
+  note: string;
+  color: string;
+  star?: boolean;
+}[] = [
   { to: "/profile", icon: User, label: "学员画像", note: "聚合 + 教练补充", color: "bg-green-50 text-green-700" },
   { to: "/briefing", icon: Sparkles, label: "AI 备课包", note: "★ 弹性档位演示", color: "bg-brand-50 text-brand-700", star: true },
   { to: "/review", icon: NotebookPen, label: "课后复盘", note: "三层结构化", color: "bg-orange-50 text-orange-700" },
   { to: "/dashboard", icon: BarChart3, label: "店长看板", note: "★ 知识贡献趋势", color: "bg-green-50 text-green-700", star: true },
   { to: "/badge", icon: Mic, label: "智能工牌", note: "长期方向预览", color: "bg-[var(--color-gray-100)] text-[var(--color-gray-700)]" },
-] as const;
+];
 
 function Index() {
   return (
