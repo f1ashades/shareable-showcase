@@ -5,7 +5,7 @@ import { ArrowRight, User, Sparkles, NotebookPen, BarChart3, Mic } from "lucide-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "DP × 美团 教练助理 · 体验课转化 Agent" },
+      { title: "教练硬线 · 体验课转化 Agent" },
       { name: "description", content: "用 AI 拉高新教练能力下限,从体验课转化扩展到完整教练日常。" },
     ],
   }),
