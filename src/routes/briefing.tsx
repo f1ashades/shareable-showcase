@@ -37,7 +37,7 @@ function BriefingPage() {
   const tierClass = `tier-${tier}` as const;
 
   return (
-    <MobileShell title="AI 备课包" subtitle="基于 9 本手册 · 信息越多,输出越精准">
+    <MobileShell title="AI 备课包" subtitle={baseCase.type === "formal" ? "基于上节课记录 · 课前 3 分钟看一眼" : "基于 9 本手册 · 信息越多,输出越精准"}>
       {/* Case tabs */}
       <div className="-mx-4 px-4 overflow-x-auto">
         <div className="flex gap-2 pb-1">
