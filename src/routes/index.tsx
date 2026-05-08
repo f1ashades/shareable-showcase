@@ -29,7 +29,7 @@ const steps: {
 
 function Index() {
   return (
-    <MobileShell title="DP × 美团 教练助理" subtitle="用 AI 拉高新教练能力下限 · v0.2.6">
+    <MobileShell title="教练硬线" subtitle="用 AI 拉高新教练能力下限 · v0.2.6">
       <Card className="!p-5 bg-gradient-to-br from-brand-50 via-white to-orange-50 border-brand-100">
         <div className="text-[11px] text-brand-700 font-medium tracking-wide">体验课转化 · Agent Demo</div>
         <h2 className="mt-2 text-[22px] leading-snug font-bold text-[var(--color-green-700)]">
